@@ -1,4 +1,5 @@
 import Game from "./classes/Game.ts";
+import TakeTokens from "./classes/turns/TakeTokens.ts";
 
 export default function splendor() {
   const game: Game = new Game([]);
@@ -9,8 +10,13 @@ export default function splendor() {
     console.log({ game });
   }
 
+  function takeTurn(turn: TakeTokens) {
+    game.validateTurn(turn);
+  }
+
   return {
     newGame,
+    takeTurn,
     getGameState: () => ({
       board: game.board,
       players: game.players,

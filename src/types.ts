@@ -48,3 +48,27 @@ export interface IBoard {
   tierTwo: Array<ICard>;
   tierThree: Array<ICard>;
 }
+
+export interface ITurn {
+  player: string;
+  type: TurnTypeTakeTokens | TurnTypeReserveCard | TurnTypeBuyCard;
+}
+
+export interface TurnTypeTakeTokens {
+  type: "take";
+  green: number;
+  red: number;
+  blue: number;
+  white: number;
+  black: number;
+}
+
+export interface TurnTypeReserveCard {
+  type: "reserve";
+  card: ICard;
+}
+
+export interface TurnTypeBuyCard {
+  type: "buy";
+  card: ICard;
+}
