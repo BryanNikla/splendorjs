@@ -1,12 +1,20 @@
 import splendor from "./splendor.ts";
 import TakeTokens from "./classes/turns/TakeTokens.ts";
+import TakeCard from "./classes/turns/TakeCard.ts";
+// import TakeCard from "./classes/turns/TakeCard.ts";
 
-const { newGame, takeTurn, getGameState } = splendor();
+const {newGame, takeTurn, getGameState} = splendor();
 
-newGame(["Bryan", "Lea"]);
+newGame(["Bryan"]);
 
-takeTurn(new TakeTokens("bryan", 0, 2, 0, 0, 0));
+takeTurn(new TakeTokens(1, 1, 1, 0, 0)); // p1
+takeTurn(new TakeTokens(1, 1, 1, 0, 0)); // p1
+takeTurn(new TakeTokens(0, 1, 1, 1, 0)); // p1
 
-takeTurn(new TakeTokens("doesnt matter", 1, 1, 1, 0, 0));
+const {board} = getGameState();
+const firstCard = board.tierOne[0];
+console.log("firstCard", firstCard);
 
-console.log("new game state", getGameState());
+takeTurn(new TakeCard(firstCard));
+
+console.log("getGameState", getGameState());

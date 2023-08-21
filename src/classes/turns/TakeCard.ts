@@ -1,7 +1,8 @@
-export default class TakeCard {
-  player: string;
+import { ICard } from "../../types.ts";
 
-  constructor(player: string) {
-    this.player = player;
+export default class TakeCard {
+  card: ICard;
+  constructor(card: ICard) {
+    this.card = card;
   }
 }

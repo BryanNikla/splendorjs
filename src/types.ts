@@ -1,3 +1,6 @@
+import Cost from "./classes/Cost.ts";
+import Card from "./classes/Card.ts";
+
 export type tokenType = "red" | "blue" | "green" | "black" | "white" | "wild";
 export type resourceType = "red" | "blue" | "green" | "black" | "white";
 
@@ -16,7 +19,7 @@ export interface IPlayer {
 
 export interface ICard {
   value: number;
-  cost: ICost;
+  cost: Cost;
   resource: resourceType;
 }
 
@@ -45,9 +48,9 @@ export interface IGame {
 }
 
 export interface IBoard {
-  tierOne: Array<ICard>;
-  tierTwo: Array<ICard>;
-  tierThree: Array<ICard>;
+  tierOne: Array<Card>;
+  tierTwo: Array<Card>;
+  tierThree: Array<Card>;
 }
 
 export interface ITurn {

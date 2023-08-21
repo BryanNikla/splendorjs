@@ -26,4 +26,28 @@ export default class Player implements IPlayer {
       green: this.cards.filter((c) => c.resource === "green").length,
     };
   }
+
+  getTokens() {
+    return {
+      red: this.tokens.filter((t) => t.type === "red").length,
+      white: this.tokens.filter((t) => t.type === "white").length,
+      blue: this.tokens.filter((t) => t.type === "blue").length,
+      black: this.tokens.filter((t) => t.type === "black").length,
+      green: this.tokens.filter((t) => t.type === "green").length,
+      wild: this.tokens.filter((t) => t.type === "wild").length,
+    };
+  }
+
+  getTotalValues() {
+    const cardTypes = this.getCardTypes();
+    const tokens = this.getTokens();
+    return {
+      red: cardTypes.red + tokens.red,
+      white: cardTypes.white + tokens.white,
+      blue: cardTypes.blue + tokens.blue,
+      black: cardTypes.black + tokens.black,
+      green: cardTypes.green + tokens.green,
+      wild: this.tokens.filter((t) => t.type === "wild").length,
+    };
+  }
 }
