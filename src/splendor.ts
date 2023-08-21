@@ -11,7 +11,9 @@ export default function splendor() {
   }
 
   function takeTurn(turn: TakeTokens) {
-    game.validateTurn(turn);
+    if (game.validateTurn(turn)) {
+      game.processTurn(turn);
+    }
   }
 
   return {

@@ -1,9 +1,17 @@
-import { ICard, IGame, IPatron, IToken, IBoard } from "../types.ts";
+import { ICard, IGame, IPatron, IToken, IBoard, tokenType } from "../types.ts";
 import { shuffle } from "../utils.ts";
 import { tierOneCards, tierThreeCards, tierTwoCards } from "../pieces.ts";
 import { patronPool } from "../pieces/patronPool.ts";
 import Player from "./Player.ts";
 import TakeTokens from "./turns/TakeTokens.ts";
+import {
+  BlackToken,
+  BlueToken,
+  GreenToken,
+  RedToken,
+  WhiteToken,
+  WildToken,
+} from "./tokens.ts";
 
 export default class Game implements IGame {
   board: IBoard;
@@ -13,35 +21,34 @@ export default class Game implements IGame {
   tierThreeCards: Array<ICard>;
   tierTwoCards: Array<ICard>;
   tokens: Array<IToken>;
+  turnNumber: number;
 
   constructor(playerNames: Array<string>) {
+    this.players = playerNames.map((name: string) => new Player(name));
+
     this.board = {
       tierOne: [],
       tierTwo: [],
       tierThree: [],
     };
 
-    this.patrons = [];
-    this.players = [];
-
-    playerNames.forEach((name: string) => {
-      this.players.push(new Player(name));
-    });
+    this.turnNumber = 0;
 
     this.tierOneCards = shuffle(tierOneCards);
     this.tierTwoCards = shuffle(tierTwoCards);
     this.tierThreeCards = shuffle(tierThreeCards);
 
-    this.tokens = Array(5).fill({ type: "wild" });
+    this.patrons = shuffle(patronPool).slice(0, this.players.length + 1);
+
+    this.tokens = Array(5).fill(new WildToken());
     for (let i = 0; i < 7; i++) {
-      this.tokens.push({ type: "green" });
-      this.tokens.push({ type: "red" });
-      this.tokens.push({ type: "black" });
-      this.tokens.push({ type: "blue" });
-      this.tokens.push({ type: "white" });
+      this.tokens.push(new GreenToken());
+      this.tokens.push(new RedToken());
+      this.tokens.push(new BlueToken());
+      this.tokens.push(new BlackToken());
+      this.tokens.push(new WhiteToken());
     }
 
-    this.patrons = shuffle(patronPool).slice(0, this.players.length + 1);
     this.updateGameState();
   }
 
@@ -52,27 +59,53 @@ export default class Game implements IGame {
     this._updateBoardCards("tierThree");
   }
 
+  // TODO: Actually just do a turn
+  processTurn(turn: TakeTokens) {
+    const player = this._getActivePlayer();
+    console.log("active player", player);
+
+    const moveTokenToPlayer = (type: tokenType) => {
+      const tokenIndex = this.tokens.findIndex((t) => t.type === type);
+      if (tokenIndex !== -1) {
+        player.tokens.push(...this.tokens.splice(tokenIndex, 1));
+      }
+    };
+
+    if (turn instanceof TakeTokens) {
+      const colors: tokenType[] = ["green", "red", "blue", "white", "black"];
+      colors.forEach((color) => {
+        const count = parseInt(String(turn[color as keyof typeof turn]));
+        for (let i = 0; i < count; i++) {
+          moveTokenToPlayer(color);
+        }
+      });
+    }
+
+    this.turnNumber++;
+  }
+
   // TODO: Check if a turn is a legal action
   validateTurn(turn: TakeTokens) {
     if (turn instanceof TakeTokens) {
-      const colors = ["green", "red", "blue", "white", "black"];
+      const colors: tokenType[] = ["green", "red", "blue", "white", "black"];
 
       const issue = colors.find((color: string) => {
         const count = parseInt(String(turn[color as keyof typeof turn]));
         const available = this.tokens.filter((t) => t.type === color).length;
-        if (count <= 0) {
-          return false;
+        if (count === 0) {
+          return false; // not using this color
         }
+
+        if (count < 0) {
+          // TODO: giving back tokens. need to check if we even have those tokens
+        }
+
         if (available <= 0) {
           console.log("nothing to take:", color, turn);
           return true; // have nothing to take
         }
         if (count > 2) {
-          console.log(
-            "can never take more than two of this color:",
-            color,
-            turn,
-          );
+          console.log("can never take more than two of this color:", color);
           return true; // Can never take more than two
         }
         if (count === 2) {
@@ -116,12 +149,14 @@ export default class Game implements IGame {
     return true;
   }
 
-  // TODO: Actually just do a turn
-  // processTurn(turn: TakeTokens) {}
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  _getActivePlayer() {
+    const playerIndex = this.turnNumber % this.players.length;
+    return this.players[playerIndex];
+  }
 
   _updateBoardCards(tier: "tierOne" | "tierTwo" | "tierThree") {
     while (this.board[tier].length < 4) {

@@ -5,6 +5,8 @@ const { newGame, takeTurn, getGameState } = splendor();
 
 newGame(["Bryan", "Lea"]);
 
-console.log("game state", getGameState());
-
 takeTurn(new TakeTokens("bryan", 0, 2, 0, 0, 0));
+
+takeTurn(new TakeTokens("doesnt matter", 1, 1, 1, 0, 0));
+
+console.log("new game state", getGameState());

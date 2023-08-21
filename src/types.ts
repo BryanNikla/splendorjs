@@ -41,6 +41,7 @@ export interface IGame {
   tierOneCards: Array<ICard>;
   tierTwoCards: Array<ICard>;
   tierThreeCards: Array<ICard>;
+  turnNumber: number;
 }
 
 export interface IBoard {
