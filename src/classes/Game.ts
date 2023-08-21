@@ -29,9 +29,9 @@ export default class Game implements IGame {
 
         this.turnNumber = 0;
 
-        this.tierOneCards = [...shuffle(tierOneCards)];
-        this.tierTwoCards = [...shuffle(tierTwoCards)];
-        this.tierThreeCards = [...shuffle(tierThreeCards)];
+        this.tierOneCards = shuffle([...tierOneCards]);
+        this.tierTwoCards = shuffle([...tierTwoCards]);
+        this.tierThreeCards = shuffle([...tierThreeCards]);
 
         this.patrons = [...shuffle(patronPool).slice(0, this.players.length + 1)];
 
@@ -56,7 +56,7 @@ export default class Game implements IGame {
 
     // TODO: Actually just do a turn
     processTurn(turn: TakeTokens | TakeCard) {
-        const player = this._getActivePlayer();
+        const player = this.getActivePlayer();
         // console.log("active player:", player.name);
 
         const moveTokenFromPlayer = (type: tokenType) => {
@@ -149,7 +149,7 @@ export default class Game implements IGame {
     }
 
     validateTurn(turn: TakeTokens | TakeCard) {
-        const player = this._getActivePlayer();
+        const player = this.getActivePlayer();
         if (turn instanceof TakeCard) {
             //
             const {red, blue, green, white, black, wild} = player.getTotalValues();
@@ -257,7 +257,7 @@ export default class Game implements IGame {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    _getActivePlayer() {
+    getActivePlayer() {
         const playerIndex = this.turnNumber % this.players.length;
         return this.players[playerIndex];
     }

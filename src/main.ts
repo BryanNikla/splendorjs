@@ -5,9 +5,12 @@ import TakeCard from "./classes/turns/TakeCard.ts";
 
 const {newGame, takeTurn, getGameState} = splendor();
 
-newGame(["Bryan"]);
+newGame(["Bryan", "Lea"]);
 
 takeTurn(new TakeTokens(1, 1, 1, 0, 0)); // p1
+takeTurn(new TakeTokens(2, 0, 0, 0, 0)); // p1
+takeTurn(new TakeTokens(2, 0, 0, 0, 0)); // p1
+takeTurn(new TakeTokens(2, 0, 0, 0, 0)); // p1
 takeTurn(new TakeTokens(1, 1, 1, 0, 0)); // p1
 takeTurn(new TakeTokens(0, 1, 1, 1, 0)); // p1
 

@@ -10,6 +10,7 @@ export default function splendor() {
     }
 
     function takeTurn(turn: TakeTokens | TakeCard) {
+        console.log("turn for:", game.getActivePlayer().name);
         if (game.validateTurn(turn)) {
             game.processTurn(turn);
         }
@@ -21,6 +22,7 @@ export default function splendor() {
         getGameState: () => ({
             board: game.board,
             players: game.players,
+            activePlayer: game.getActivePlayer(),
             patrons: game.patrons,
             tokens: game.tokens,
         }),
