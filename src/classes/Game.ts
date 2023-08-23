@@ -146,6 +146,7 @@ export default class Game implements IGame {
         }
 
         this.turnNumber++;
+        this.updateGameState();
     }
 
     validateTurn(turn: TakeTokens | TakeCard) {

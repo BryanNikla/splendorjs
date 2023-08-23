@@ -5,74 +5,85 @@ export type tokenType = "red" | "blue" | "green" | "black" | "white" | "wild";
 export type resourceType = "red" | "blue" | "green" | "black" | "white";
 
 export interface IToken {
-  type: tokenType;
+    type: tokenType;
 }
 
 export interface IPlayer {
-  name: String;
-  cards: Array<any>;
-  score: number;
-  tokens: Array<IToken>;
-  patrons: Array<IPatron>;
-  reserved: Array<ICard>;
+    name: String;
+    cards: Array<any>;
+    score: number;
+    tokens: Array<IToken>;
+    patrons: Array<IPatron>;
+    reserved: Array<ICard>;
 }
 
 export interface ICard {
-  value: number;
-  cost: Cost;
-  resource: resourceType;
+    value: number;
+    cost: Cost;
+    resource: resourceType;
+}
+
+export interface ICardData {
+    tier: number;
+    value: number;
+    red: number;
+    blue: number;
+    black: number;
+    green: number;
+    white: number;
+    resource: resourceType;
 }
 
 export interface ICost {
-  red: number;
-  blue: number;
-  black: number;
-  green: number;
-  white: number;
+    red: number;
+    blue: number;
+    black: number;
+    green: number;
+    white: number;
 }
 
 export interface IPatron {
-  value: number;
-  cost: ICost;
+    value: number;
+    cost: ICost;
 }
 
 export interface IGame {
-  board: IBoard;
-  patrons: Array<IPatron>;
-  tokens: Array<IToken>;
-  players: Array<IPlayer>;
-  tierOneCards: Array<ICard>;
-  tierTwoCards: Array<ICard>;
-  tierThreeCards: Array<ICard>;
-  turnNumber: number;
+    board: IBoard;
+    patrons: Array<IPatron>;
+    tokens: Array<IToken>;
+    players: Array<IPlayer>;
+    tierOneCards: Array<ICard>;
+    tierTwoCards: Array<ICard>;
+    tierThreeCards: Array<ICard>;
+    turnNumber: number;
 }
 
 export interface IBoard {
-  tierOne: Array<Card>;
-  tierTwo: Array<Card>;
-  tierThree: Array<Card>;
+    tierOne: Array<Card>;
+    tierTwo: Array<Card>;
+    tierThree: Array<Card>;
 }
 
 export interface ITurn {
-  player: string;
-  type: TurnTypeTakeTokens | TurnTypeReserveCard | TurnTypeBuyCard;
+    player: string;
+    type: TurnTypeTakeTokens | TurnTypeReserveCard | TurnTypeBuyCard;
 }
 
 export interface TurnTypeTakeTokens {
-  type: "take";
-  green: number;
-  red: number;
-  blue: number;
-  white: number;
-  black: number;
+    type: "take";
+    green: number;
+    red: number;
+    blue: number;
+    white: number;
+    black: number;
 }
 
 export interface TurnTypeReserveCard {
-  type: "reserve";
-  card: ICard;
+    type: "reserve";
+    card: ICard;
 }
 
 export interface TurnTypeBuyCard {
-  type: "buy";
-  card: ICard;
+    type: "buy";
+    card: ICard;
 }
